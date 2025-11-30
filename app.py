@@ -421,9 +421,7 @@ def contact():
 def send_enquiry():
     pass
 
-def contact():
-    """Contact page route."""
-    return render_template('contact.html', active_page='contact')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
