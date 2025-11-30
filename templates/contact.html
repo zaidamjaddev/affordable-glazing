@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Affordable Glazing Systems{% endblock %}
+{% block meta_description %}Get in touch for quotes, surveys, or technical glazing advice. Call, email, or send a message online.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Contact</p>
+        <h1>Speak directly with our project team</h1>
+        <p>We’re here Monday to Saturday to answer specification questions, schedule surveys, and provide estimates.</p>
+    </div>
+</section>
+
+<section class="page-section contact-grid" id="quote-form">
+    <div class="contact-info">
+        <h2 class="section-heading">Visit or call</h2>
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+                <strong>Showroom & Office</strong>
+                <p>Unit 7, Sutton Business Park,<br>Restmor Way, Hackbridge, SM6 7AH</p>
+            </div>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <div>
+                <strong>Call us</strong>
+                <p><a href="tel:07532721934">07532 721 934</a></p>
+            </div>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+                <strong>Email</strong>
+                <p><a href="mailto:affordableglazingsys@gmail.com">affordableglazingsys@gmail.com</a></p>
+            </div>
+        </div>
+        <div class="opening-hours">
+            <h3>Opening hours</h3>
+            <ul>
+                <li>Mon – Fri: 8:30am – 6:00pm</li>
+                <li>Saturday: 9:00am – 2:00pm</li>
+                <li>Sunday: By appointment</li>
+            </ul>
+        </div>
+        <div class="social-links">
+            <h3>Follow us</h3>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/affordableglazingsystems" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+                <a href="https://www.instagram.com/affordableglazingsys" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="contact-form">
+        <h2 class="section-heading">Send us your brief</h2>
+        <form action="{{ url_for('send_enquiry') }}" method="POST">
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email address" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" name="phone" placeholder="Phone number" required>
+            </div>
+            <div class="form-group">
+                <textarea name="message" rows="5" placeholder="Tell us about your project" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send enquiry</button>
+        </form>
+    </div>
+</section>
+
+<section class="page-section map-panel">
+    <div class="container">
+        <h2 class="section-heading">Areas we cover</h2>
+        <p>We install across London, Surrey, Sussex, and neighbouring counties. If you are outside these areas, please get in touch and we’ll confirm availability.</p>
+        
+        <div style="width: 100%; height: 450px; border-radius: 18px; overflow: hidden; box-shadow: 0 20px 45px rgba(20, 58, 82, 0.12);">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1039.3400519115905!2d-0.15830524708029234!3d51.37503430776571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2s!4v1764267622784!5m2!1sen!2s" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        
+    </div>
+</section>
+{% endblock %}

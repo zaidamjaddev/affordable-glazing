@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Reviews | Affordable Glazing Systems{% endblock %}
+{% block meta_description %}See what homeowners say about working with Affordable Glazing Systems on window and door projects.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Reviews</p>
+        <h1>Homeowners who trusted us</h1>
+        <p>Real projects, clear communication, and aftercare that keeps clients coming back for their next renovation.</p>
+    </div>
+</section>
+
+<section class="page-section reviews-grid">
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </div>
+        <p>"Affordable Glazing replaced fourteen sash windows in our Victorian terrace. The finish is superb and the house is noticeably warmer."</p>
+        <div class="review-author">
+            <strong>Sarah & Tom</strong>
+            <span>Balham SW12</span>
+        </div>
+    </article>
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"From survey to install everything felt organised. The bi-folds glide beautifully and the team left the site spotless."</p>
+        <div class="review-author">
+            <strong>James Patel</strong>
+            <span>Wimbledon SW19</span>
+        </div>
+    </article>
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"We had a tight renovation timeline. The team coordinated perfectly with our builder and delivered the aluminium windows early."</p>
+        <div class="review-author">
+            <strong>Harriet L.</strong>
+            <span>Kingston KT2</span>
+        </div>
+    </article>
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"After installation they returned to tweak a couple of hinges within 48 hours. Great aftercare and communication."</p>
+        <div class="review-author">
+            <strong>Leo & Priya</strong>
+            <span>Purley CR8</span>
+        </div>
+    </article>
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </div>
+        <p>"Their advice on glass specification made a huge difference to road noise. Highly recommend the acoustic upgrade."</p>
+        <div class="review-author">
+            <strong>Daniela K.</strong>
+            <span>Clapham SW4</span>
+        </div>
+    </article>
+    <article class="review-card">
+        <div class="review-rating">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"Transparent pricing and no pressure. They showed samples, handled paperwork, and the composite door looks fantastic."</p>
+        <div class="review-author">
+            <strong>S. Thompson</strong>
+            <span>Cheam SM3</span>
+        </div>
+    </article>
+</section>
+
+<section class="page-section testimonial-cta">
+    <div class="container">
+        <h2>Ready to add your own review?</h2>
+        <p>Share your project brief and we’ll map out the ideal glazing package.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">Start my quote</a>
+    </div>
+</section>
+{% endblock %}
+

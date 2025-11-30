@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ door.name }} | Product Detail{% endblock %}
+{% block meta_description %}{{ door.description }}{% endblock %}
+
+{% block content %}
+<section class="page-hero detail-hero">
+    <div class="container narrow">
+        <p class="eyebrow">Product range</p>
+        <h1>{{ door.name }}</h1>
+        <p>{{ door.description }}</p>
+        <div class="detail-hero-actions">
+            <a class="btn btn-primary" href="{{ url_for('home') }}?product={{ door.select_value }}#quote">Request a quote</a>
+            <a class="text-link" href="{{ url_for('products') }}">&larr; Back to all products</a>
+        </div>
+    </div>
+</section>
+
+<section class="page-section door-detail">
+    <div class="container door-detail-grid">
+        <div>
+            <h2 class="section-heading">Features</h2>
+            <ul class="feature-list stacked">
+                {% for feature in door.features %}
+                <li><i class="fas fa-check"></i>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h2 class="section-heading">Project gallery</h2>
+            {% if door.images %}
+            <div class="door-slider" data-slider="detail">
+                <button class="slider-btn prev" type="button" data-slider-control="prev" aria-label="Previous image">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="door-slider-frame">
+                    {% for image in door.images %}
+                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ door.name }} installation {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                    {% endfor %}
+                </div>
+                <button class="slider-btn next" type="button" data-slider-control="next" aria-label="Next image">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            {% else %}
+            <p>Gallery coming soon.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

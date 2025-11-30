@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Affordable Glazing Systems | Windows & Doors{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Affordable Glazing Systems supplies and installs premium uPVC windows, doors, and bespoke glazing across London and Surrey.{% endblock %}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/mylogo.png') }}" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{{ body_class | default('') }}">
+    <header class="header">
+        <div class="container header-inner">
+            <div class="mobile-menu-btn" aria-label="Toggle navigation" role="button" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='images/mylogo.png') }}" alt="Affordable Glazing Systems logo">
+                </a>
+            </div>
+
+            <nav class="nav" aria-label="Primary navigation">
+                <ul>
+                    <li><a href="{{ url_for('home') }}" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
+                    <li><a href="{{ url_for('products') }}" class="{{ 'active' if active_page == 'products' else '' }}">Products</a></li>
+                    <li><a href="{{ url_for('about') }}" class="{{ 'active' if active_page == 'about' else '' }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="{{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-right">
+                <a href="tel:07532721934" class="phone-link">
+                    <i class="fas fa-phone"></i>
+                    <span>07532 721 934</span>
+                </a>
+                <a href="{{ url_for('contact') }}#quote-form" class="btn btn-primary">Get a Quote</a>
+            </div>
+        </div>
+
+        {% if active_page == 'home' %}
+        <div class="info-bar">
+            <div class="container">
+                <span><i class="fas fa-shield-alt"></i> 10 year guarantee</span>
+                <span><i class="fas fa-industry"></i> Made in Britain</span>
+                <span>10+ years in business</span>
+                <span>Trade Prices £</span>
+            </div>
+        </div>
+        {% endif %}
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <section class="brands">
+        <div class="container">
+            <h2 class="section-title">Trusted Suppliers</h2>
+            <div class="brands-slider">
+                <div class="brand-track">
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand1.jpeg') }}" alt="Cortizo"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand2.jpeg') }}" alt="Rehau"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand3.jpeg') }}" alt="Deceuninck"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand4.jpeg') }}" alt="Aluplast"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand5.jpeg') }}" alt="Origin"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand6.jpeg') }}" alt="Smart Systems"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand1.jpeg') }}" alt="Cortizo"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand2.jpeg') }}" alt="Rehau"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand3.jpeg') }}" alt="Deceuninck"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand4.jpeg') }}" alt="Aluplast"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand5.jpeg') }}" alt="Origin"></div>
+                    <div class="brand-slide"><img src="{{ url_for('static', filename='images/brands/brand6.jpeg') }}" alt="Smart Systems"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                
+                <div class="footer-column">
+                    <h3>Explore</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('products') }}">Products</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Visit Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i>Unit 7, Sutton Business Park, Restmor Way, SM6 7AH</li>
+                        <li><i class="fas fa-phone"></i>07532 721 934</li>
+                        <li><i class="fas fa-envelope"></i>affordableglazingsys@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Hours</h3>
+                    <ul>
+                        <li>Mon – Fri: 8:30am – 6:00pm</li>
+                        <li>Sat: 9:00am – 2:00pm</li>
+                        <li>Sun: By appointment</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ current_year | default(2024) }} Affordable Glazing Systems. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-buttons">
+        <a href="https://wa.me/447577500610" class="whatsapp-btn" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="mailto:affordableglazingsys@gmail.com" class="email-btn">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
+

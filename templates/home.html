@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Affordable Glazing Systems | Bespoke Windows & Doors{% endblock %}
+{% block meta_description %}Trusted glazing specialists delivering energy-efficient windows, secure doors, and custom aluminium solutions for modern homes.{% endblock %}
+
+{% block content %}
+<section class="hero home-hero" id="quote">
+    <div class="container hero-grid">
+        <div class="hero-form">
+            <h2>Fast Quote</h2>
+            <p>Share a few project details and we’ll return a tailored estimate within 24 hours.</p>
+            <form action="{{ url_for('send_enquiry') }}" method="POST" enctype="multipart/form-data">
+                <select name="product" id="quote-product" required>
+                    <option value="">Select a product *</option>
+                    <option value="Windows">Windows</option>
+                    <option value="Doors">Doors</option>
+                    <option value="Rooflights">Rooflights</option>
+                    <option value="Conservatories">Conservatories</option>
+                </select>
+                <div class="name-fields">
+                    <input type="text" name="first_name" placeholder="First name *" required>
+                    <input type="text" name="last_name" placeholder="Last name *" required>
+                </div>
+                <input type="tel" name="phone" placeholder="Phone number *" required>
+                <input type="email" name="email" placeholder="Email address *" required>
+                <div class="address-fields">
+                    <input type="text" name="house_number" placeholder="House name/number *" required>
+                    <input type="text" name="postcode" placeholder="Postcode *" required>
+                </div>
+                <textarea name="description" placeholder="Describe your project (optional)"></textarea>
+                <div class="file-input">
+                    <label for="project_image">Attach an image (optional)</label>
+                    <input type="file" id="project_image" name="project_image" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Request estimate</button>
+            </form>
+            <small>We respect your data. Details are only used to respond to your enquiry.</small>
+        </div>
+    </div>
+</section>
+
+<section class="page-section split-grid">
+    <div>
+        <p class="eyebrow">What we deliver</p>
+        <h2 class="section-heading">Home improvements that feel considered</h2>
+        <p>We combine proven profiles from Rehau, Origin, and Solidor with meticulous installation standards to create warmer, quieter homes. Every order is measured twice, factory built-to-size, and installed by directly employed fitters.</p>
+        <div class="stat-grid">
+            <div>
+                <h3>2,400+</h3>
+                <p>Completed installations since 2010</p>
+            </div>
+            <div>
+                <h3>4.9/5</h3>
+                <p>Average client rating</p>
+            </div>
+            <div>
+                <h3>48 hrs</h3>
+                <p>Typical survey-to-quote turnaround</p>
+            </div>
+        </div>
+    </div>
+    <div class="feature-card">
+        <h3>Included with every project</h3>
+        <ul>
+            <li><i class="fas fa-shield-check"></i> Insurance-backed guarantees</li>
+            <li><i class="fas fa-ruler-combined"></i> Laser-accurate digital surveying</li>
+            <li><i class="fas fa-recycle"></i> Responsible disposal of old units</li>
+            <li><i class="fas fa-file-contract"></i> Transparent, fixed pricing</li>
+        </ul>
+    </div>
+</section>
+
+<section class="page-section tile-grid">
+    <div class="tile">
+        <a href="{{ url_for('products') }}?product=windows#windows" class="tile-link">
+            <img src="{{ url_for('static', filename='images/window1.png') }}" alt="Windows">
+            <h3>Windows</h3>
+        </a>
+        <p>From heritage sash to ultra-slim aluminium, every frame is measured to the millimetre and factory finished.</p>
+        <a class="text-link" href="{{ url_for('products') }}?product=windows#windows">Explore windows</a>
+    </div>
+    <div class="tile">
+        <a href="{{ url_for('products') }}?product=doors#doors" class="tile-link">
+            <img src="{{ url_for('static', filename='images/door1.png') }}" alt="Doors">
+            <h3>Doors</h3>
+        </a>
+        <p>Secure entrance, patio, and bi-fold systems fitted with premium locking hardware and weather seals.</p>
+        <a class="text-link" href="{{ url_for('products') }}?product=doors#doors">View doors</a>
+    </div>
+    <div class="tile">
+        <a href="{{ url_for('products') }}?product=rooflights#rooflights" class="tile-link">
+            <img src="{{ url_for('static', filename='images/hero-bg.jpg') }}" alt="Rooflights">
+            <h3>Rooflights</h3>
+        </a>
+        <p>Lanterns and flat skylights that flood kitchens and extensions with natural light without heat loss.</p>
+        <a class="text-link" href="{{ url_for('products') }}?product=rooflights#rooflights">See rooflights</a>
+    </div>
+    <div class="tile">
+        <a href="{{ url_for('products') }}?product=conservatories#conservatories" class="tile-link">
+            <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="Conservatories">
+            <h3>Conservatories</h3>
+        </a>
+        <p>Full-build conservatories and orangeries with insulated roofs, bespoke glazing, and turnkey project care.</p>
+        <a class="text-link" href="{{ url_for('products') }}?product=conservatories#conservatories">Plan conservatories</a>
+    </div>
+</section>
+
+<section class="page-section cta-band">
+    <div class="container">
+        <h2>Planning a renovation?</h2>
+        <p>Book a no-pressure consultation with a senior surveyor to review drawings, discuss glass specifications, and schedule installation around your build programme.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">Plan my project</a>
+    </div>
+</section>
+{% endblock %}
+
