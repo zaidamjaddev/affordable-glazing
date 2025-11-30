@@ -1,18 +1,9 @@
-
 from flask import Flask, render_template, request, redirect, url_for, abort
-import smtplib
 import os
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
-
-# Secure email config via environment variables
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-RECIPIENT_EMAIL = "affordableglazingsys@gmail.com"
 
 DOOR_CONFIG = [
     {
@@ -20,7 +11,7 @@ DOOR_CONFIG = [
         "name": "Single Doors",
         "category": "doors",
         "summary": "Secure composite entrance doors that combine kerb appeal with everyday durability.",
-        "description": "Upgrade your home’s security and kerb appeal with our high-performance composite front doors. Built with a robust timber or steel-reinforced core and advanced GRP skins, these doors offer exceptional durability, insulation, and weather resistance.",
+        "description": "Upgrade your home's security and kerb appeal with our high-performance composite front doors. Built with a robust timber or steel-reinforced core and advanced GRP skins, these doors offer exceptional durability, insulation, and weather resistance.",
         "image_folder": "doors/singledoors",
         "features": [
             "Multi-point locking for maximum security",
@@ -283,18 +274,21 @@ def inject_globals():
 
 
 def _load_images(relative_folder: str):
+    """Load image filenames from a folder relative to static/images."""
     directory = os.path.join(app.static_folder, 'images', *relative_folder.split('/'))
     if not os.path.isdir(directory):
         return []
 
     files = sorted([
         f for f in os.listdir(directory)
-        if os.path.isfile(os.path.join(directory, f))
+        if os.path.isfile(os.path.join(directory, f)) and 
+        f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
     ])
     return [f"{relative_folder.rstrip('/')}/{filename}" for filename in files]
 
 
 def _get_door_type(slug: str):
+    """Get door configuration by slug with images."""
     for config in DOOR_CONFIG:
         if config["slug"] == slug:
             door = config.copy()
@@ -304,10 +298,12 @@ def _get_door_type(slug: str):
 
 
 def _get_all_doors():
+    """Get all door configurations with images."""
     return [_get_door_type(config["slug"]) for config in DOOR_CONFIG]
 
 
 def _get_window_type(slug: str):
+    """Get window configuration by slug with images."""
     for config in WINDOW_CONFIG:
         if config["slug"] == slug:
             win = config.copy()
@@ -317,6 +313,7 @@ def _get_window_type(slug: str):
 
 
 def _get_rooflight_type(slug: str):
+    """Get rooflight configuration by slug with images."""
     for config in ROOFLIGHT_CONFIG:
         if config["slug"] == slug:
             roof = config.copy()
@@ -326,6 +323,7 @@ def _get_rooflight_type(slug: str):
 
 
 def _get_conservatory_type(slug: str):
+    """Get conservatory configuration by slug with images."""
     for config in CONSERVATORY_CONFIG:
         if config["slug"] == slug:
             cons = config.copy()
@@ -335,6 +333,7 @@ def _get_conservatory_type(slug: str):
 
 
 def _get_variant(slug: str):
+    """Get any product variant by slug."""
     for getter in (_get_door_type, _get_window_type, _get_rooflight_type, _get_conservatory_type):
         variant = getter(slug)
         if variant:
@@ -347,38 +346,37 @@ def _feedback_redirect(flag: str):
     target = request.referrer or url_for('home')
     parsed = urlparse(target)
 
-    # Fallback if referrer is relative
+    # Handle internal redirects
     if not parsed.netloc:
-        parsed = parsed._replace(path=target, scheme='', netloc='')
+        path = parsed.path or url_for('home')
+        separator = '&' if '?' in path else '?'
+        return redirect(f"{path}{separator}{flag}=true")
 
+    # Handle external/full URL redirects
     query_params = dict(parse_qsl(parsed.query))
     query_params[flag] = "true"
     new_query = urlencode(query_params)
     redirect_url = urlunparse((
         parsed.scheme,
         parsed.netloc,
-        parsed.path or url_for('home'),
+        parsed.path,
         parsed.params,
         new_query,
         parsed.fragment
     ))
-
-    # If no scheme/netloc (internal path), build url_for equivalent
-    if not parsed.netloc:
-        path = parsed.path or url_for('home')
-        separator = '&' if '?' in path else '?'
-        return redirect(f"{path}{separator}{flag}=true")
 
     return redirect(redirect_url)
 
 
 @app.route('/')
 def home():
+    """Home page route."""
     return render_template('home.html', active_page='home')
 
 
 @app.route('/products')
 def products():
+    """Products overview page showing all categories."""
     door_types = _get_all_doors()
     window_types = [_get_window_type(cfg["slug"]) for cfg in WINDOW_CONFIG]
     rooflight_types = [_get_rooflight_type(cfg["slug"]) for cfg in ROOFLIGHT_CONFIG]
@@ -395,96 +393,37 @@ def products():
 
 @app.route('/products/<slug>')
 def product_detail(slug):
-    door = _get_variant(slug)
-    if not door:
+    """Individual product detail page."""
+    product = _get_variant(slug)
+    if not product:
         abort(404)
-    return render_template('product_detail.html', door=door, active_page='products')
+    return render_template('product_detail.html', door=product, active_page='products')
 
 
 @app.route('/about')
 def about():
+    """About page route."""
     return render_template('about.html', active_page='about')
 
 
 @app.route('/reviews')
 def reviews():
+    """Reviews page route."""
     return render_template('reviews.html', active_page='reviews')
 
 
 @app.route('/contact')
 def contact():
+    """Contact page route."""
     return render_template('contact.html', active_page='contact')
 
-@app.route('/send_enquiry', methods=['POST'])
+@app.route('/send_enquiry')
 def send_enquiry():
-    form = request.form
+    pass
 
-    # Detect which form was submitted
-    if "product" in form:
-        # Quote form
-        subject = f"New Quote Request - {form.get('product')}"
-        html_body = f"""
-        <html><body style="font-family:Arial,sans-serif;color:#333;">
-        <h2 style="background:#004080;color:white;padding:10px;">New Quote Request</h2>
-        <p><strong>Product:</strong> {form.get('product')}</p>
-        <p><strong>Name:</strong> {form.get('first_name')} {form.get('last_name')}</p>
-        <p><strong>Phone:</strong> {form.get('phone')}</p>
-        <p><strong>Email:</strong> {form.get('email')}</p>
-        <p><strong>Address:</strong> {form.get('house_number')}, {form.get('postcode')}</p>
-        <p><strong>Description:</strong> {form.get('description') or 'N/A'}</p>
-        <hr><small>This message was sent from your website quote form.</small>
-        </body></html>
-        """
-        text_body = f"""
-        Product: {form.get('product')}
-        Name: {form.get('first_name')} {form.get('last_name')}
-        Phone: {form.get('phone')}
-        Email: {form.get('email')}
-        Address: {form.get('house_number')}, {form.get('postcode')}
-        Description: {form.get('description') or 'N/A'}
-        """
-
-    else:
-        # Contact form
-        subject = "New Message from Website Contact Form"
-        html_body = f"""
-        <html><body style="font-family:Arial,sans-serif;color:#333;">
-        <h2 style="background:#004080;color:white;padding:10px;">New Contact Form Message</h2>
-        <p><strong>Name:</strong> {form.get('name')}</p>
-        <p><strong>Email:</strong> {form.get('email')}</p>
-        <p><strong>Phone:</strong> {form.get('phone')}</p>
-        <p><strong>Message:</strong><br>{form.get('message')}</p>
-        <p><strong>Description:</strong> {form.get('description') or 'N/A'}</p>
-        <hr><small>This message was sent from your website contact form.</small>
-        </body></html>
-        """
-        text_body = f"""
-        Name: {form.get('name')}
-        Email: {form.get('email')}
-        Phone: {form.get('phone')}
-        Message: {form.get('message')}
-        Description: {form.get('description') or 'N/A'}
-        """
-
-    try:
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = subject
-        msg['From'] = EMAIL_ADDRESS
-        msg['To'] = RECIPIENT_EMAIL
-        msg.attach(MIMEText(text_body, 'plain'))
-        msg.attach(MIMEText(html_body, 'html'))
-
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_ADDRESS, RECIPIENT_EMAIL, msg.as_string())
-        server.quit()
-
-        return _feedback_redirect('success')
-
-    except Exception as e:
-        print("Error sending email:", e)
-        return _feedback_redirect('error')
+def contact():
+    """Contact page route."""
+    return render_template('contact.html', active_page='contact')
 
 if __name__ == '__main__':
     app.run(debug=True)
