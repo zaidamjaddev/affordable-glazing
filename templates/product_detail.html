@@ -35,7 +35,7 @@
                 </button>
                 <div class="door-slider-frame">
                     {% for image in door.images %}
-                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ door.name }} installation {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                    <img src="/static/images/{{ image }}" alt="{{ door.name }} installation {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
                     {% endfor %}
                 </div>
                 <button class="slider-btn next" type="button" data-slider-control="next" aria-label="Next image">

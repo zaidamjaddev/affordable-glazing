@@ -46,7 +46,7 @@
                     <div class="door-preview" data-slider="preview">
                         {% if window.images %}
                             {% for image in window.images %}
-                            <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ window.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                            <img src="/static/images/{{ image }}" alt="{{ window.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
                             {% endfor %}
                             <button class="slider-btn prev" type="button" data-slider-control="prev" aria-label="Previous image">
                                 <i class="fas fa-chevron-left"></i>
@@ -90,7 +90,7 @@
                     <div class="door-preview" data-slider="preview">
                         {% if door.images %}
                             {% for image in door.images %}
-                            <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ door.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                            <img src="/static/images/{{ image }}" alt="{{ door.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
                             {% endfor %}
                             <button class="slider-btn prev" type="button" data-slider-control="prev" aria-label="Previous image">
                                 <i class="fas fa-chevron-left"></i>
@@ -134,7 +134,7 @@
                     <div class="door-preview" data-slider="preview">
                         {% if roof.images %}
                             {% for image in roof.images %}
-                            <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ roof.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                            <img src="/static/images/{{ image }}" alt="{{ roof.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
                             {% endfor %}
                             <button class="slider-btn prev" type="button" data-slider-control="prev" aria-label="Previous image">
                                 <i class="fas fa-chevron-left"></i>
@@ -178,7 +178,7 @@
                     <div class="door-preview" data-slider="preview">
                         {% if cons.images %}
                             {% for image in cons.images %}
-                            <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ cons.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
+                            <img src="/static/images/{{ image }}" alt="{{ cons.name }} image {{ loop.index }}" class="{% if loop.first %}active{% endif %}">
                             {% endfor %}
                             <button class="slider-btn prev" type="button" data-slider-control="prev" aria-label="Previous image">
                                 <i class="fas fa-chevron-left"></i>

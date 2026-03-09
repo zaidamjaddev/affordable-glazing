@@ -6,10 +6,12 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
-from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
+from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode, quote
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load .env from the same directory as app.py
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 app = Flask(__name__)
 
@@ -282,17 +284,41 @@ def inject_globals():
 
 
 def _load_images(relative_folder: str):
-    """Load image filenames from a folder relative to static/images."""
+    """
+    Load images from static/images/<relative_folder>.
+    Returns URL-safe paths e.g. doors/singledoors/my%20image.jpg
+    Works locally and on production (Render/Vercel).
+    """
     directory = os.path.join(app.static_folder, 'images', *relative_folder.split('/'))
-    if not os.path.isdir(directory):
-        return []
 
-    files = sorted([
-        f for f in os.listdir(directory)
-        if os.path.isfile(os.path.join(directory, f)) and 
-        f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
-    ])
-    return [f"{relative_folder.rstrip('/')}/{filename}" for filename in files]
+    # Primary: direct directory listing (local / standard server)
+    if os.path.isdir(directory):
+        files = sorted([
+            f for f in os.listdir(directory)
+            if os.path.isfile(os.path.join(directory, f))
+            and f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
+        ])
+        return [
+            f"{relative_folder.rstrip('/')}/{quote(f)}"
+            for f in files
+        ]
+
+    # Fallback: walk static folder (serverless environments)
+    results = []
+    static_images_root = os.path.join(app.static_folder, 'images')
+    target_prefix = os.path.normpath(relative_folder)
+    try:
+        for root, dirs, files in os.walk(static_images_root):
+            dirs.sort()
+            rel_root = os.path.relpath(root, static_images_root)
+            if os.path.normpath(rel_root) == target_prefix:
+                for f in sorted(files):
+                    if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')):
+                        results.append(f"{relative_folder.rstrip('/')}/{quote(f)}")
+                break
+    except Exception:
+        pass
+    return results
 
 
 def _get_door_type(slug: str):
