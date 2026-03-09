@@ -1,7 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -417,9 +425,79 @@ def contact():
     """Contact page route."""
     return render_template('contact.html', active_page='contact')
 
-@app.route('/send_enquiry')
+@app.route('/send_enquiry', methods=['POST'])
 def send_enquiry():
-    pass
+    """Handle enquiry form submissions from both home and contact pages."""
+    form = request.form
+
+    if 'name' in form:
+        # ── Contact page form ──────────────────────────────────────────────
+        name    = form.get('name', '').strip()
+        email   = form.get('email', '').strip()
+        phone   = form.get('phone', '').strip()
+        message = form.get('message', '').strip()
+
+        subject = f"New Contact Enquiry from {name}"
+        body    = (
+            f"Name:    {name}\n"
+            f"Email:   {email}\n"
+            f"Phone:   {phone}\n\n"
+            f"Message:\n{message}"
+        )
+        attachment = None
+
+    else:
+        # ── Home page quote form ───────────────────────────────────────────
+        first_name   = form.get('first_name', '').strip()
+        # last_name    = form.get('last_name', '').strip()
+        product      = form.get('product', '').strip()
+        phone        = form.get('phone', '').strip()
+        email        = form.get('email', '').strip()
+        # house_number = form.get('house_number', '').strip()
+        postcode     = form.get('postcode', '').strip()
+        description  = form.get('description', '').strip()
+
+        subject = f"New Quote Request – {product} from {first_name}"
+        body    = (
+            f"Product:  {product}\n"
+            f"Name:     {first_name} \n"
+            f"Phone:    {phone}\n"
+            f"Email:    {email}\n"
+            f"Postcode:  {postcode}\n\n"
+            f"Description:\n{description or 'N/A'}"
+        )
+        attachment = request.files.get('project_image')
+
+    try:
+        smtp_email    = os.environ['SMTP_EMAIL']
+        smtp_password = os.environ['SMTP_PASSWORD']
+        recipient     = os.environ['RECIPIENT_EMAIL']
+
+        msg = MIMEMultipart()
+        msg['From']    = smtp_email
+        msg['To']      = recipient
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        if attachment and attachment.filename:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(attachment.read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition',
+                f'attachment; filename="{attachment.filename}"'
+            )
+            msg.attach(part)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(smtp_email, smtp_password)
+            server.sendmail(smtp_email, recipient, msg.as_string())
+
+        return _feedback_redirect('success')
+
+    except Exception as e:
+        app.logger.error(f"Email send failed: {e}")
+        return _feedback_redirect('error')
 
 
 
